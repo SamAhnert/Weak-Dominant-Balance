@@ -8,6 +8,8 @@ While the applied method remains consistent across examples, each specific appli
 
 # Examples
 
+All challenge cases for our *weak dominant balance* method are separated into self-containing folder: ```BoundaryLayer```, ```Duct```, and ```WavyChannel```.
+
 ## Transitional Boundary Layer Flow
 
 The ```BoundaryLayer``` folder is currently divided into ```data```, ```pointwise```, and ```weak```. 
