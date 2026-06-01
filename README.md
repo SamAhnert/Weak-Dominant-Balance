@@ -1,6 +1,6 @@
 # Weak Dominant Balance
 
-We include all code required to implement the methodology and recreate the results of the paper "Weak Dominant Balance for Robust Identification of Dynamically Consistent Fluid Flow Structure". Our code is not built out to the point of a regularly maintaned package, although any updates will be made accordingly and all feedback, discussions, or inquiries are welcome and appreciated from the community.
+We include all code required to implement the methodology and recreate the results of the paper "Weak Dominant Balance for Robust Identification of Dynamically Consistent Fluid Flow Structure". Our code is not built out to the point of a regularly maintaned package, although any updates to the method will be accompanied by updates to this repository accordingly, and all feedback, discussions, or inquiries are welcome and appreciated from the community.
 
 # Code
 
