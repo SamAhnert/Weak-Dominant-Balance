@@ -1,3 +1,17 @@
+'''
+This code contains all necessary implementation of the weak method, appropriate pipeline for loading the Wavy Channel DNS data, and appropriate hyperparameters
+to run weak dominant balance on the Wavy Channel flow under the RANS equation to recreate our final GMMs. application of sPCA can be done in the 
+"DNS_Weak_WavyChannel_sPCA_Reduction.ipynb" file under the "/DNS/plotting/" folder, along with "DNS_Weak_WavyChannel_EqnSpace.ipynb" to generate other
+components of our results figure.
+
+Warning: Running this MAY OVERWRITE the current stored results from the GMM used in the paper! 
+(although likely you will encounter "folder already exists" errors before it is able to override current results).
+
+Important: It is not necessary to run this code to recreate plots for results, "DNS_Weak_WavyChannel_sPCA_Reduction.ipynb" may be run independent of/prior 
+to this.
+'''
+
+
 import h5py
 import jax
 jax.config.update("jax_enable_x64", True)

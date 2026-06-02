@@ -1,9 +1,14 @@
 '''
+This code contains all necessary implementation of the weak method, appropriate pipeline for loading the Wavy Channel DNS data, and appropriate hyperparameters
+to run weak dominant balance on the Wavy Channel flow under the RANS equation to recreate our final GMMs. application of sPCA can be done in the 
+"DNS_Weak_WavyChannel_sPCA_Reduction.ipynb" file under the "/DNS/plotting/" folder, along with "DNS_Weak_WavyChannel_EqnSpace.ipynb" to generate other
+components of our results figure.
 
-NOTE: Here we use the correlation function to give a more intuitive basis for how the fftconvolve is working (so we don't bring the negatives out of nowhere)
+Warning: Running this MAY OVERWRITE the current stored results from the GMM used in the paper! 
+(although likely you will encounter "folder already exists" errors before it is able to override current results).
 
-But it still gives the same results, just the code now mirrors the math derivation of the weak form, and mirroring that is probably more intuitive for someone trying to understand the code along with the paper...
-
+Important: It is not necessary to run this code to recreate plots for results, "DNS_Weak_WavyChannel_sPCA_Reduction.ipynb" may be run independent of/prior 
+to this.
 '''
 
 import h5py
@@ -80,8 +85,6 @@ def TF_old_scaled(degree, support_bound_x, support_bound_y, dx):
     x_ref_full, y_ref_full = jnp.meshgrid(x_ref, y_ref)
 
     TF = TF_ref(x_ref_full, y_ref_full, degree)
-    # normalize to unit integral? (I think it is scaled inherently by being defined [-1,1])
-    # TF = TF / jnp.max(jnp.abs(TF))
 
     return TF
 
@@ -259,15 +262,20 @@ uv_interp = jnp.nan_to_num(griddata(xy_symm, uv_symm.flatten(), (x_centers, y_ce
 rhom_interp = jnp.nan_to_num(griddata(xy_symm, rhom_symm.flatten(), (x_centers, y_centers), method='linear'))#
 print('time to interpolate: ' + str(time.time() - t0))
 
-# # Core candidates, large enough to let the numerical integral converge, small enough to focus on dynamics in a small locale
-support_arr_x = np.array([0.02, 0.025, 0.015, 0.03]) #
-# support_arr_y = np.array([0.015, 0.03]) #, 0.02, 0.025
-support_arr_y = np.array([0.02, 0.025]) #, 
+# # Converged candidate, large enough to let the numerical integral converge, small enough to focus on dynamics in a small locale
+support_arr_x = np.array([0.02]) #
+support_arr_y = np.array([0.015]) #
+
+'''
+NOTE: Here we use the correlation function to give a more intuitive basis for how the fftconvolve is working (so we don't bring the negatives out of nowhere)
+
+But it still gives the same results, just the code now mirrors the math derivation of the weak form, and mirroring that is probably more intuitive for someone trying to understand the code along with the paper...
+'''
 
 for support_bound_y in support_arr_y:
     for support_bound_x in support_arr_x:
         grid_spacing = dx
-        degree = 10
+        degree = 5 # defintely can boot this higher if wanting other equations in the future
 
         print('start convolutions')
         # Expand the term and note it pops out of itself. use this to fully remove the derivative from the field
@@ -366,14 +374,10 @@ for support_bound_y in support_arr_y:
 
         print('full features made')
 
-        nc_arr = [12,14,16]
+        nc_arr = [11]
 
         no_x_support_pts = round(support_bound_x/grid_spacing)
         no_y_support_pts = round(support_bound_y/grid_spacing)
-
-        # save_dir = f'plots/SuppStudy_Post_Correlate_Fix/support_x_{no_x_support_pts}_support_y_{no_y_support_pts}_grid_spacing_{grid_spacing}_TFDegree_{degree}/'
-        # save_dir = f'plots/SuppStudy_Post_Correlate_Fix/support_x_{no_x_support_pts}_support_y_{no_y_support_pts}_grid_spacing_{grid_spacing}_TFDegree_{degree}/'
-        # os.mkdir(save_dir)
 
         masked_x_coords_DNS_grid = x_centers[mask].flatten()
         masked_y_coords_DNS_grid = y_centers[mask].flatten()

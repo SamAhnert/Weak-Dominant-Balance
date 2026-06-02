@@ -1,9 +1,13 @@
 '''
-AugustRedo
+This code contains all necessary implementation of the pointwise method, appropriate pipeline for loading the wavy channel data, and appropriate 
+hyperparameters to obtain baseline GMM clusters under the RANS equation. application of sPCA can be done in the 
+"DNS_Pointwise_WavyChannel_Baseline.ipynb" file under the "/plotting/" folder to generate all components of our results figure.
 
-Applying symmetry across 3 humps as well as making the naming convention easier to sort through.
-Also including CV matrices for high nc #s since this was useful in the duct.
+Warning: Running this MAY OVERWRITE the current stored results from the GMM used in the paper! 
+(although likely you will encounter "folder already exists" errors before it is able to override current results).
 
+Important: It is not necessary to run this code to recreate plots for results, "DNS_Pointwise_WavyChannel_Baseline.ipynb" may be run 
+independent of/prior to running this.
 '''
 
 import h5py
@@ -99,8 +103,6 @@ with h5py.File(mean_file, "r") as file:
 ETA = 1.849e-5
 RHO = 1.1839
 u_tau_theory = 0.0629
-# print(np.max(x))
-# raise Exception('stop')
 
 '''
 Import Data
@@ -116,18 +118,6 @@ def wavyWallCurve(x_input):
 pre-process data
 '''
 
-# print(um.shape)
-# print(x.shape)
-
-# print(x[:,49])
-# print(x[:,150])
-
-# print(x[:,149])
-# print(x[:,250])
-
-# print(x[:,249])
-# print(x[:,350])
-
 # apply symmetry over 3 waves
 x_symm = x[:,48:152]
 y_symm = y[:,48:152]
@@ -140,13 +130,6 @@ uu_symm = (uu[:, 48:152] + uu[:, 148:252] + uu[:, 248:352])/3
 uv_symm = (uv[:, 48:152] + uv[:, 148:252] + uv[:, 248:352])/3
 rhom_symm = (rhom[:, 48:152] + rhom[:, 148:252] + rhom[:, 248:352])/3
 
-# print(x_symm[0])
-# print(y_symm[:,0] - y[:,248])
-
-# print(x[:, 148:252])
-# print(x[:, 248:352])
-
-# raise Exception('stop')
 '''
 Setup Test Functions
 '''
@@ -180,14 +163,6 @@ print('time to interpolate: ' + str(time.time() - t0))
 # Calculate Derivatives
 compute_derivatives = False
 if compute_derivatives:
-    # dx = float(x[1]-x[0])
-    # print(y.shape)
-    # print(y[1:]-y[:-1])
-    # dy = float(y[1]-y[0])
-
-    # print(dy)
-    # raise Exception('stop')
-
     nx = len(x_range)
     ny = len(y_range)
 
@@ -238,10 +213,6 @@ lap_u = np.load('data/lap_u.npy').reshape(x_centers.shape[0],x_centers.shape[1],
 Ruux = np.load('data/Ruux.npy').reshape(x_centers.shape[0],x_centers.shape[1], order = 'F')
 Ruvy = np.load('data/Ruvy.npy').reshape(x_centers.shape[0],x_centers.shape[1], order = 'F')
 
-print(ux.shape)
-
-print(ux)
-
 UU_x = u_interp * ux
 VU_y = v_interp * uy
 
@@ -281,10 +252,6 @@ mask = jnp.where((TF_Centers[:,1]-support_bound_y) <= full_grid_of_max_wall_boun
 
 mask = jnp.reshape(mask, ux.shape)
 
-# print(mask[0])
-
-# print(time.time()-t0)
-
 mask = numpy.array(mask)[0:int(yF/grid_spacing + 1),:]
 erroneous_support_buffer_x = int(support_bound_x/dx) + 1
 erroneous_support_buffer_y = int(support_bound_y/dy) + 1
@@ -315,7 +282,7 @@ plot_terms = False
 cmax = 0.01
 cmin=-0.01
 if plot_terms:
-    # os.mkdir(save_dir + 'terms/')
+    os.mkdir(save_dir + 'terms/')
 
     np.save(save_dir + 'terms/features', features)
 
@@ -358,7 +325,7 @@ if plot_terms:
 nfeatures = 6
 no_trials = 10
 
-nc_arr = [9,10,11,12]
+nc_arr = [12]
 
 for nc in nc_arr:
     nc_save_dir = save_dir + f'nc{nc}/'
@@ -370,11 +337,6 @@ for nc in nc_arr:
 
         model = train_gmm_model(nc,features,sample_pct=0.25)
         cluster_idx = (model.predict(features)+1).astype(int)
-
-        # print(np.max(cluster_idx))
-        # print(np.min(cluster_idx))
-
-        # print(cluster_idx[:20])
 
         plt.figure(figsize = (10,4))
         plt.scatter(masked_x_coords_DNS_grid,masked_y_coords_DNS_grid,2,cluster_idx, cmap = cm, vmin=-0.5, vmax=cm.N-0.5)

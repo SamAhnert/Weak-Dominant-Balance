@@ -1,7 +1,14 @@
 '''
-Copied from PIV_ExpanddConvTerm_NoPressure_May7.py
-'''
+This code contains all necessary implementation of the pointwise method, appropriate pipeline for loading the wavy channel data, and appropriate 
+hyperparameters to obtain baseline GMM clusters under the RANS equation. application of sPCA can be done in the 
+"PIV_Pointwise_WavyChannel_Baseline.ipynb" file under the "/plotting/" folder to generate all components of our results figure.
 
+Warning: Running this MAY OVERWRITE the current stored results from the GMM used in the paper! 
+(although likely you will encounter "folder already exists" errors before it is able to override current results).
+
+Important: It is not necessary to run this code to recreate plots for results, "PIV_Pointwise_WavyChannel_Baseline.ipynb" may be run 
+independent of/prior to running this.
+'''
 
 import h5py
 import jax
