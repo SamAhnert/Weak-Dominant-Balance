@@ -1,3 +1,16 @@
+'''
+This code contains all necessary implementation of the weak method, appropriate pipeline for loading the duct data, and appropriate hyperparameters
+to run weak dominant balance on the Duct data under the VortTrans equation to recreate our final GMMs. application of sPCA can be done in the 
+"plot_results_errBased_sPCA_Weak_VortTransDuct.ipynb" file. Equation space and representative vorticity fields can be ploted using the same
+files in the RANS case, but with our using the appropriate fields described in this code.
+
+Warning: Running this MAY OVERWRITE the current stored results from the GMM used in the paper! 
+(although likely you will encounter "folder already exists" errors before it is able to override current results).
+
+Important: It is not necessary to run this code to recreate plots for results, "plot_results_errBased_sPCA_Weak_VortTransDuct.ipynb" may be run 
+independent of/prior to this.
+'''
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd

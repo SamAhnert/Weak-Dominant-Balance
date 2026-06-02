@@ -1,13 +1,13 @@
 '''
-Maybe the issue comes from integrating th TF across [-1,1] insteadt of the true support bound.
+This code contains all necessary implementation of the weak method, appropriate pipeline for loading the duct data, and appropriate hyperparameters
+to run weak dominant balance on the Duct data under the RANS equation to recreate our final GMMs. application of sPCA can be done in the 
+"plot_duct_RANS_errBased_sPCA.ipynb" file under the "/DuctRANSPlotting/" folder, along with other files to generate components of our results figure.
 
-I wonder if something like TF_[-1,1] = TF[-supp,supp]/dx or /dx*dy?
+Warning: Running this MAY OVERWRITE the current stored results from the GMM used in the paper! 
+(although likely you will encounter "folder already exists" errors before it is able to override current results).
 
-I'm sure I could plot that
-
-NO
-
-Lets try changing the range of the data to -> [-100,100]
+Important: It is not necessary to run this code to recreate plots for results, "plot_duct_RANS_errBased_sPCA.ipynb" may be run independent of/prior 
+to this.
 '''
 
 
@@ -31,9 +31,6 @@ from matplotlib.colors import ListedColormap
 import seaborn as sns
 import colorcet as cc
 sns_list = sns.color_palette(cc.glasbey,n_colors=20).as_hex()
-
-# print(sns_list)
-# raise Exception('stop')
 
 # sns_list.insert(0, '#ffffff')  # Insert white at zero position
 sns_cmap = ListedColormap(sns_list)
@@ -327,18 +324,8 @@ def calculate_weak_fields(x_trunc, y_trunc, support_bound_x, support_bound_y, gr
 
 
     for j,field in enumerate(data):
-        # print(field.type)
-        # field = jnp.reshape(field, shape=X.shape) # reshape for JAX compatibility
-        # UW_x
-        # VW_y
-        # W_xx + W_yy
-
-        print(field.shape)
-
-        # print(TF_x(4, support_bound_x,support_bound_y, grid_spacing))
 
         if j == 0:
-            print(TF_old(TF_degree, support_bound_x,support_bound_y, grid_spacing))
             # TODO: do I figure out the gradient -> interpolate or interpolate -> gradient?
             data_interp = JAX_interpolateBLDataForFFTConvolve(field, X_interp, Y_interp, X_DNS_OG, Y_DNS_OG)
 
@@ -554,11 +541,6 @@ def main():
     X_DNS_OG = jnp.array(100 * x[:97])
     Y_DNS_OG = jnp.array(100 * y[:97])
 
-    print(jnp.max(X_DNS_OG))
-    print(jnp.max(Y_DNS_OG))
-
-    # raise Exception('stop')
-
     X = xx_symm
     Y = yy_symm
     xy = jnp.vstack([X.flatten(),Y.flatten()]).T
@@ -726,11 +708,6 @@ def main():
                 plt.colorbar(boundaries=jnp.arange(0.5, nc+1.5), ticks=jnp.arange(0, nc+1))
                 plt.savefig(nc_save_dir + f'ClusterDomain')
                 plt.close()
-
-
-
-                # print(np.min(cluster_idx))
-                # print(np.max(cluster_idx))
 
                 if nc > 12:
                     continue
