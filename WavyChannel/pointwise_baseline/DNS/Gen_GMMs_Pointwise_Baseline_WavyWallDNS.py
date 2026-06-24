@@ -80,24 +80,32 @@ Import Data
 '''
 
 referenceDNS = 'data/boxOutput500500.hdf5'
-mean_file = 'data/Mean_1300000-1500000.hdf5'
 with h5py.File(referenceDNS, "r") as file:
     list_keys = list(file.keys())[0]
     x = jnp.array(file[list_keys].get('x')).squeeze()
     y = jnp.array(file[list_keys].get('y')).squeeze()
 
-with h5py.File(mean_file, "r") as file:
-    list_keys = list(file.keys())[0]
-    b = list(file[list_keys].keys()) 
+# mean_file = 'data/Mean_1300000-1500000.hdf5'
+# with h5py.File(mean_file, "r") as file:
+#     list_keys = list(file.keys())[0]
+#     b = list(file[list_keys].keys()) 
 
-    um = jnp.array(file[list_keys].get('um')[0,:,:]).squeeze()
-    vm = jnp.array(file[list_keys].get('vm')[0,:,:]).squeeze()
-    # wm = jnp.array(file[list_keys].get('wm')[0,:,:]).squeeze() # In theory, these should go to zero
-    pm = jnp.array(file[list_keys].get('pm')[0,:,:]).squeeze()
+#     um = jnp.array(file[list_keys].get('um')[0,:,:]).squeeze()
+#     vm = jnp.array(file[list_keys].get('vm')[0,:,:]).squeeze()
+#     # wm = jnp.array(file[list_keys].get('wm')[0,:,:]).squeeze() # In theory, these should go to zero
+#     pm = jnp.array(file[list_keys].get('pm')[0,:,:]).squeeze()
 
-    uu = jnp.array(file[list_keys].get('uu')[0,:,:]).squeeze()
-    uv = jnp.array(file[list_keys].get('uv')[0,:,:]).squeeze()
-    rhom = jnp.array(file[list_keys].get('rhom')[0,:,:]).squeeze()
+#     uu = jnp.array(file[list_keys].get('uu')[0,:,:]).squeeze()
+#     uv = jnp.array(file[list_keys].get('uv')[0,:,:]).squeeze()
+#     rhom = jnp.array(file[list_keys].get('rhom')[0,:,:]).squeeze()
+
+# load sparsely saved data
+um = np.load('um.npy')
+vm = np.load('vm.npy')
+pm = np.load('pm.npy')
+uu = np.load('uu.npy')
+uv = np.load('uv.npy')
+rhom = np.load('rhom.npy')
 
 # DNS params
 ETA = 1.849e-5

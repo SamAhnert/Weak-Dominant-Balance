@@ -4,7 +4,7 @@ We include all code required to implement the methodology and recreate the resul
 
 # Code
 
-While the applied method remains consistent across examples, each specific application requires a unique pipeline to load the various challenge data sets, and the repo is partitioned as such. We note that we have tested several variations of the method across our challenge cases including weak vs. pointwise equation-space construction, RANS vs. Vorticity Transport equations, and PIV vs DNS data. Thus, in order to remove redundant storage of non-trivially sized datasets in several folders across the code, we have centralized the data storage in a single ```data``` folder, from which files may be copied into the appropriate data folders throughout a downloaded repo as necessary. The DNS fields for the wavy channel exceed githubs maximum files size and are available upon request, although we have included fields from a post-method run in order to recreate our results.
+While the applied method remains consistent across examples, each specific application requires a unique pipeline to load the various challenge data sets, and the repo is partitioned as such. We note that we have tested several variations of the method across our challenge cases including weak vs. pointwise equation-space construction, RANS vs. Vorticity Transport equations, and PIV vs DNS data. Thus, in order to remove redundant storage of non-trivially sized datasets in several folders across the code, we have centralized the data storage in a single ```data``` folder, from which files may be copied into the appropriate data folders throughout a downloaded repo as necessary. We have also included fields from a post-method run in order to recreate our plotted results without fully re-running the code.
 
 # Examples
 
@@ -55,3 +55,7 @@ E. Lagemann, S. L. Brunton, and C. Lagemann. Uncovering wall-shear stress dynami
 
 The data used in our example of Transitional Boundary Layer Flow is obtained from the Johns Hopkins Turbulence Database, and we are appreciative of the authors of the original DNS:
 T. A. Zaki. From streaks to spots and on to turbulence: Exploring the dynamics of boundary layer transition. *Flow, Turbulence and Combustion*, 91(3):451-473, 2013.
+
+## System requirements
+
+This code is tested on a linux workstation, running Ubuntu 22.04.5, Python 3.12.2, with an Intel(R) Core i9-7920X CPU (24 threads) and a NVIDIA GeForce RTX 2080 Ti GPU with 11GB of VRAM. A dedicated GPU is not required, but certain JAX functions are not optimized for CPU execution. No proprietary or special software is needed, and all required libraries via a conda or virtual environment should install in approximately 30 minutes on a typical workstation.
