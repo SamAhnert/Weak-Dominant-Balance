@@ -48,12 +48,15 @@ Weak dominant balance implementation for both these examples follows a very simi
 # Data
 
 The data used in our example of Turbulent Duct Flow has been generously provided by the authors of:
+
 R. Vinuesa, A. Noorani, A. Lozano-Durán, G. K. El Khoury, P. Schlatter, P. F. Fischer, and H. M. Nagib. Aspect ratio effects in turbulent duct flows studied through direct numerical simulation. *Journal of Turbulence*, 15(10):677-706, 2014.
 
 The data used in our example of Turbulent Wavy Channel Flow has been generously provided by the authors of:
+
 E. Lagemann, S. L. Brunton, and C. Lagemann. Uncovering wall-shear stress dynamics from neural-network enhanced fluid flow measurements. *Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences*, 480(2292):20230798, 2024.
 
 The data used in our example of Transitional Boundary Layer Flow is obtained from the Johns Hopkins Turbulence Database, and we are appreciative of the authors of the original DNS:
+
 T. A. Zaki. From streaks to spots and on to turbulence: Exploring the dynamics of boundary layer transition. *Flow, Turbulence and Combustion*, 91(3):451-473, 2013.
 
 ## System requirements
